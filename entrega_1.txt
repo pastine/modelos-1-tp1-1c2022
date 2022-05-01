@@ -1,0 +1,27 @@
+### Análisis de la situación
+Es un problema del viajante, en el que hay que minimizar la distancia total recorrida.
+
+La diferencia con un problema del viajante estandar es que en este ejercicio hay que considerar
+la demanda de plata de cada uno de los cajero, de forma tal de no exeder la cantidad máxima de plata 
+que puede cargar el camion en un momento dado.
+
+### Cómo resolver el problema
+Dado que es un problema combinatorio, sabemos que existen un número grande de soluciones posibles.
+
+La forma mas simple de encontrar una solución posible, no necesariamente la óptima, es no tener en cuenta
+la distancia entre los cajeros y simplemente resolver el problema basado en la restricción fuerte de la demanda
+de plata de los cajeros y la cantidad máxima de plata que se puede tener en el camión.
+
+Una vez obtenida esa solución inicial se puede ir mejorando, tratando de minimizar la distancia recorrida total.
+
+### Entrega 1
+
+Para esta entrega, como mencioné en la sección anterior, decidí no tener en cuenta la distancia entre los cajeros.
+
+El problema tiene un gran número de soluciones que se acatan a la restricción fuerte respecto a la demanda
+de dinero. Simplemente decidí ir tomando el siguiente cajero de forma greedy, tal que:
+- Si la capacidad actual del camión no va a pasar la máxima, voy a un cajero con demanda positiva
+- Si la capacidad actual va a pasar la máxima, voy a un cajero con demanda negativa
+
+Esta forma de resolver el problema nos va a dar una solución, aunque probablemente bastante costosa en terminos
+de distancia recorrida.
