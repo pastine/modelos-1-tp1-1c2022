@@ -17,6 +17,22 @@ const parseInput = () => {
   return { maxCapacity, banks };
 }
 
+const getStartingBank = (banks) => {
+  return banks.filter(({demand}) => demand >= 0)[0];
+}
+
+const sortBanksByDistanceTo = (bank, banksById) => {
+  const origin_x = bank.x;
+  const origin_y = bank.y;
+  const distanceToOrigin = (b) => {
+    const distanceOnX = origin_x - b.x;
+    const distanceOnY = origin_y - b.y;
+    return Math.sqrt(Math.pow(distanceOnX, 2) + Math.pow(distanceOnY, 2));
+  }
+
+  return Object.values(banksById).sort((bank1, bank2) => distanceToOrigin(bank1) - distanceToOrigin(bank2));
+}
+
 const getFinalPath = () => {
   // We split the banks into positive and negative demand.
   // We'll visit positive demand banks until the current capacity of the truck is about to reach the maximum.
@@ -24,46 +40,34 @@ const getFinalPath = () => {
   // We repeat this steps until we finish processing the bank list.
 
   const { maxCapacity, banks } = parseInput();
+  let banksById = banks.reduce((acc, { demand, id, x, y }) => {
+    acc[id] = { demand, x, y, id};
+    return acc;
+  }, {});
+  let currentBank = getStartingBank(banks);
+  let currentCapacity = currentBank.demand;
+  const route = [currentBank];
+  delete banksById[currentBank.id];
+  
+  for (let i = 0; i < banks.length - 1; i++){
+    // We sort all visitable banks by the distance to the current bank.
+    const sortedBanks = sortBanksByDistanceTo(currentBank, banksById);
+    // The next bank is the closest bank that can add money and not pass maxCapacity
+    // or the closest bank that allows the truck to leave money there
+    const nextBank = sortedBanks.filter(({ demand }) => (
+      demand + currentCapacity < maxCapacity && demand + currentCapacity >= 0
+      ))[0];
 
-  const banksWithPositiveDemand = banks.filter(({ demand }) => demand >= 0);
-  const banksWithNegativeDemand = banks.filter(({ demand }) => demand < 0);
-
-  let indexBanksWithPositiveDemand = 0;
-  let indexBanksWithNegativeDemand = 0;
-
-  let currentCapacity = 0;
-  const route = [];
-
-  for (let i = 0; i < banks.length; i++){
-    if (
-      (indexBanksWithPositiveDemand < banksWithPositiveDemand.length) &&
-      (currentCapacity + banksWithPositiveDemand[indexBanksWithPositiveDemand].demand < maxCapacity)
-    ) {
-      console.log('Grabbing positive demand bank', {...banksWithPositiveDemand[indexBanksWithPositiveDemand]}, { currentCapacity });
-      route.push(banksWithPositiveDemand[indexBanksWithPositiveDemand]);
-      currentCapacity +=  banksWithPositiveDemand[indexBanksWithPositiveDemand].demand;
-      indexBanksWithPositiveDemand++;
-
-    } else if (
-      (indexBanksWithNegativeDemand < banksWithNegativeDemand.length) &&
-      (currentCapacity - banksWithNegativeDemand[indexBanksWithNegativeDemand].demand > 0)
-    ) {
-      console.log('Grabbing negative demand bank', {...banksWithNegativeDemand[indexBanksWithNegativeDemand]}, { currentCapacity });
-      route.push(banksWithNegativeDemand[indexBanksWithNegativeDemand]);
-      currentCapacity +=  banksWithNegativeDemand[indexBanksWithNegativeDemand].demand;
-      indexBanksWithNegativeDemand++;
-    } else {
-      console.log('Cannot solve the problem this way', {
-        totalBanksProcessed: i,
-        totakPositiveDemand: indexBanksWithPositiveDemand,
-        totalNegativeDemand: indexBanksWithNegativeDemand,
-        currentCapacity,
-        nextPositiveDemandToProcess: banksWithPositiveDemand[indexBanksWithPositiveDemand],
-        nextWithNegativeDemandToProcess: banksWithNegativeDemand[indexBanksWithNegativeDemand],
-        totalBanks: banks.length
-      });
-      break;
-    }
+    console.log(`\n\nCurrent status ${i + 1}`)
+    console.log({currentBank, nextBank, top3SortedBanks: sortedBanks.slice(0, 3)});
+    // Remove the next bank from the list of banks to visit.
+    delete banksById[nextBank.id];
+    // Add the bank to the path array.
+    route.push(nextBank);
+    // Update capacity of the truck
+    currentCapacity += nextBank.demand;
+  
+    currentBank = nextBank;
   }
   return route;
 }
