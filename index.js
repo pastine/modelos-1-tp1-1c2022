@@ -58,7 +58,7 @@ const getFinalPath = () => {
       demand + currentCapacity < maxCapacity && demand + currentCapacity >= 0
       ))[0];
 
-    console.log(`\n\nCurrent status ${i + 1}`)
+    console.log(`\n\nCurrent status ${i + 1}`);
     console.log({currentBank, nextBank, top3SortedBanks: sortedBanks.slice(0, 3)});
     // Remove the next bank from the list of banks to visit.
     delete banksById[nextBank.id];

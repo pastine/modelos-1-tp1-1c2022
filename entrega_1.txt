@@ -25,3 +25,13 @@ de dinero. Simplemente decidí ir tomando el siguiente cajero de forma greedy, t
 
 Esta forma de resolver el problema nos va a dar una solución, aunque probablemente bastante costosa en terminos
 de distancia recorrida.
+
+### Entrega 2
+
+Para la segunda entrega comencé a tener en cuenta la distancia entre los cajeros.
+
+Elijo un cajero por el cual comenzar y voy a seguir por el cajero más cercano que cumpla lo siguiente:
+- Si tiene demanda positiva, que no exeda el máximo permitido por el camion
+- Si tiene demanda negativa, que no baje de 0.
+
+De esta manera para cada cajero voy a ir al más cercano posible según las restricciones.
