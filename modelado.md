@@ -68,6 +68,7 @@ Entonces: $C[0] = 0$ dado que empezamos con la caja en $0$ desde la central.
 Sabemos que $C[k] \ge 0$ por condición de no negatividad de las variables.
 
 Debemos darle valor a las bivalentes que nos van a decir si un cajero es parte del recorrido hasta cierto orden
+
 $$
 k \times Y_{\Delta C}[k][i]  \leq U[i] \leq  k + M \times Y_{\Delta C}[k][i]
 $$
@@ -79,15 +80,18 @@ $$
 $$
 
 El valor de la caja en cualquier momento del recorrido, va a ser la suma de las variaciones (positivas o negativas según la demanda de cada cajero) hasta ese momento
+
 $$
 C[k] = \sum_{i=1}^{SUC} Y_{\Delta C}[k][i] \times \Delta C[i]
 $$
 $$
 \forall  k \in (0, SUC)
 $$
+
 Por último, debemos pedir que la caja nunca supere el valor máximo de MAX_DINERO en ningún momento del recorrido
+
 $$
-C[k] \leq MAX\_DINERO
+C[k] \leq MAXDINERO
 $$
 $$
 \forall  k \in (0, SUC)
@@ -96,6 +100,7 @@ $$
 **Funcional**
 
 Queremos minimizar la distancia recorrida en todo el camino.
+
 $$
 Z_{min} = \sum_{i=0}^{SUC}  \sum_{j=0}^{SUC}  W[i][j] \times Y[i][j]
 $$
