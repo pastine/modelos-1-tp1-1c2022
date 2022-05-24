@@ -1,4 +1,4 @@
-const input = require('./input.json');
+const input = require('./input-entrega-2.json');
 const fs = require('fs');
 
 const OUTPUT_FILE = 'solution.out';
@@ -6,12 +6,12 @@ const OUTPUT_FILE = 'solution.out';
 const parseInput = () => {
   const maxCapacity = input.CAPACIDAD;
   const banks = [];
-  input.DEMANDAS.forEach((bankDemand, i) => {
+  Object.keys(input.DEMANDAS).forEach((id) => {
     banks.push({
-      demand: bankDemand.demanda,
-      id: bankDemand.id,
-      x: input.NODE_COORD_SECTION[i].x,
-      y: input.NODE_COORD_SECTION[i].y,
+      demand: input.DEMANDAS[id].demanda,
+      id,
+      x: input.NODE_COORD_SECTION[id].x,
+      y: input.NODE_COORD_SECTION[id].y,
     })
   });
   return { maxCapacity, banks };
