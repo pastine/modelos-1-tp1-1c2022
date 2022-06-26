@@ -1,7 +1,7 @@
-const input = require('./input-entrega-2.json');
+const input = require('./input.json');
 const fs = require('fs');
 
-const OUTPUT_FILE = 'solution.out';
+const OUTPUT_FILE = 'solution-3.out';
 
 const parseInput = () => {
   const maxCapacity = input.CAPACIDAD;
@@ -39,7 +39,7 @@ const getFinalPath = () => {
   // If the capacity is about to be passed, then we take a bank with negative demand.
   // We repeat this steps until we finish processing the bank list.
 
-  const { maxCapacity, banks } = parseInput();
+  const { banks } = parseInput();
   let banksById = banks.reduce((acc, { demand, id, x, y }) => {
     acc[id] = { demand, x, y, id};
     return acc;
@@ -52,11 +52,8 @@ const getFinalPath = () => {
   for (let i = 0; i < banks.length - 1; i++){
     // We sort all visitable banks by the distance to the current bank.
     const sortedBanks = sortBanksByDistanceTo(currentBank, banksById);
-    // The next bank is the closest bank that can add money and not pass maxCapacity
-    // or the closest bank that allows the truck to leave money there
-    const nextBank = sortedBanks.filter(({ demand }) => (
-      demand + currentCapacity < maxCapacity && demand + currentCapacity >= 0
-      ))[0];
+
+    const nextBank = sortedBanks[0];
 
     console.log(`\n\nCurrent status ${i + 1}`);
     console.log({currentBank, nextBank, top3SortedBanks: sortedBanks.slice(0, 3)});
@@ -76,7 +73,7 @@ const main = () => {
   const solution = getFinalPath();
   let strSolution = '';
   solution.forEach(({id}) => {
-    strSolution += `${id} `;
+    strSolution += `${id}, `;
   });
   fs.writeFileSync(OUTPUT_FILE, strSolution);
 }

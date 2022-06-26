@@ -102,3 +102,11 @@ La diferencia entre ambas es que para `TSP_MTZ.mod` va a existir tanto la arista
 En cambio, en `TSP.MOD` se define una sola vez cada arista que conecta a dos vertices. Esto permite optimizar la cantidad de variables que el modelo debe manejar.
 
 Esta optimización solo puede hacerse con un grafo no dirigido o uno dirigido que mantenga el peso de las aristas igual tanto para ir de un vertice `A` hacia `B`, o bién de `B` hacia `A`.
+
+# Punto 5
+
+## Corrida MTZ con solución inicial
+
+Una vez que le damos una solución inicial pasada por una heurística, el modelo MTZ converge aún más rápido que cuándo arranca con los puntos en orden. Vemos que a los 15 segundos ya está en una solución cercana.
+
+![MTZ solution statistics](mtz-solution-2.png)
